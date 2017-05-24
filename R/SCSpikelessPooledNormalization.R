@@ -259,7 +259,7 @@ main<-function(exp_matrix, cell_pheno, genes_table, mode='Nuclear',
 }
   
         ### Launch commands
-args<-commandArgs(FALSE)
+args<-commandArgs(TRUE)
 main(args[1], args[2], args[3], args[4], args[5],
       as.logical(args[6]), as.numeric(args[7]), as.logical(args[8]),
       as.logical(args[9]), args[10],
