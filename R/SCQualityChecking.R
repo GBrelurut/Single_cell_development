@@ -344,7 +344,7 @@ main<-function(file1, file2, file3,
   }
   
   # Export results ------------------------------------------
-  write.table(pheno, output1, row.names=TRUE, sep="\t")
+  write.table(pheno, output1, row.names=TRUE, sep="\t", col.names=TRUE)
   
   # Extract filtered cells -----------------------------------
   filter<-filter_cells(c(exp_cells, nbr_cells, mt_cells, sp_cells), nb_filters)
@@ -368,8 +368,8 @@ main<-function(file1, file2, file3,
     count<-count[,-filter]
     pheno<-pheno[-filter,]
   }
-  write.table(count, output2, row.names=TRUE, sep="\t")
-  write.table(pheno, output3, row.names=TRUE, sep="\t")
+  write.table(count, output2, row.names=TRUE, sep="\t", col.names=TRUE)
+  write.table(pheno, output3, row.names=TRUE, sep="\t", col.names=TRUE)
   
   # Export filtered dot plot ---------------------------------
   if(plots=='All' || plots != 'Saturation'){
