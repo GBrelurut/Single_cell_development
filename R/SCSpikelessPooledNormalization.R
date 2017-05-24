@@ -13,7 +13,7 @@ import_exp_matrix<-function(file){
   ### Name of the file or complete path should be given as input.
   
   count<-read.table(file, header=TRUE, 
-                    stringsAsFactors=FALSE, sep='\t') 
+                    stringsAsFactors=FALSE, sep='\t', row.names=1) 
   count<-count[, order(colnames(count))]
   return(count)
 }
@@ -24,7 +24,7 @@ import_pheno<-function(file){
   ### Name of the file or complete path should be given as input.
   
   pheno<-read.table(file, header=TRUE, 
-                    stringsAsFactors=FALSE, sep='') 
+                    stringsAsFactors=FALSE, sep='\t', row.names=1) 
   pheno<-pheno[ order(rownames(pheno)),]
   return(pheno)
 }
@@ -32,7 +32,7 @@ import_pheno<-function(file){
         ## Import control genes table
 import_controls<-function(file){
   controls<-read.table(file, header=TRUE,
-                       stringsAsFactors=FALSE, sep="\t")
+                       stringsAsFactors=FALSE, sep="\t", row.names=1)
   return(controls)
 }
 
