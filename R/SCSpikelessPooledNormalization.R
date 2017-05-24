@@ -103,7 +103,7 @@ Filter_exp_matrix<-function(count, Mt_positions, Spike_positions, option='Nuclea
   return(count)
 }
 
-correct_gene_length(controls, count) {
+correct_gene_length<-function(controls, count) {
   lengths<-sapply(rownames(count), function(gene){
     controls$Length[grep(gene, rownames(controls))]
   })
