@@ -189,16 +189,16 @@ main<-function(exp_matrix, cell_pheno, genes_table, mode='Nuclear',
   MT_positions<-get_MT_positions(controls, count)
   Spike_positions<-get_Spike_positions(controls, count)
   
-  # Treating and saving expression matrix
+  # Filter expression matrix
   count<-Filter_exp_matrix(count, MT_positions, Spike_positions, option=mode)
   rm(Spike_positions)
   rm(MT_positions)
-  write.table(count, paste0(mode, output1), row.names=TRUE, col.names=TRUE, sep='\t')
-  
-  # Correct for length if possible
+    
+  # Correct for length if possible and write matrix
   if(! is.null(controls$GeneID)) ccount<-correct_gene_length(controls, count)
   else ccount<-count
-  
+  write.table(ccount, paste0(mode, output1), row.names=TRUE, col.names=TRUE, sep='\t')
+
   # Plotting raw data
   plot.data(ccount, 
             color=as.factor(pheno[,grep(color.by, colnames(pheno))]), 
@@ -220,10 +220,8 @@ main<-function(exp_matrix, cell_pheno, genes_table, mode='Nuclear',
     }
   SF<-(sizeFactors(SCE))
   
-  # Normalizing data, and saving normalized matrix
-  SCE<-normalise(SCE, log=FALSE)
-  write.table(get_exprs(SCE,"exprs"), paste0(mode, output2), row.names=TRUE, col.names=TRUE, sep='\t')
-  
+  # Normalizing data
+  SCE<-normalise(SCE, log=FALSE)  
   # treating and saving Cells phenotype file
     # Add size factors
   pheno$Size_factors<-SF
@@ -248,9 +246,11 @@ main<-function(exp_matrix, cell_pheno, genes_table, mode='Nuclear',
   }
   write.table(pheno, output3, row.names=TRUE, col.names=TRUE, sep="\t")
 
-  # Correct for length if possible
+  # Correct for length if possible and save matrix
   if(! is.null(controls$GeneID)) ccount<-correct_gene_length(controls, get_exprs(SCE, "exprs"))
   else ccount<-get_exprs(SCE, "exprs")
+  write.table(ccount, paste0(mode, output2), row.names=TRUE, col.names=TRUE, sep='\t')
+
   
   # Plotting Normalized Data
   plot.data(ccount, 
