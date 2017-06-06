@@ -7,16 +7,16 @@ library('Rtsne')
 ##### Data pre-processing ==================================================================================================
   ##### Reading and ordering non auxillary tables
 
-        ## Import Expression Matrix
+## Import Expression Matrix
 import_exp_matrix<-function(file){
   ### This function import a matrix, and order it by its column names before returning it.
   ### Name of the file or complete path should be given as input.
-  
   count<-read.table(file, header=TRUE, 
                     stringsAsFactors=FALSE, sep='\t', row.names=1) 
   count<-count[, order(colnames(count))]
   return(count)
 }
+
 
         ##Import Reduced Design File
 import_pheno<-function(file){
@@ -32,7 +32,8 @@ import_pheno<-function(file){
         ## Import control genes table
 import_controls<-function(file){
   controls<-read.table(file, header=TRUE,
-                       stringsAsFactors=FALSE, sep="\t", row.names=1)
+                       stringsAsFactors=FALSE, sep="\t",
+                       row.names=1)
   return(controls)
 }
 
@@ -174,6 +175,7 @@ plot.data<-function(matrix, color="black", normalized=FALSE) {
 main<-function(exp_matrix, cell_pheno, genes_table, mode='Nuclear', 
                color.by="Condition", preclustering=FALSE, 
                min_cluster_size=100, force.positive=FALSE,
+               length_correction=TRUE,
                cell_cycle=FALSE, organism='mus musculus',
                output1, output2, output3){
   
@@ -189,16 +191,16 @@ main<-function(exp_matrix, cell_pheno, genes_table, mode='Nuclear',
   MT_positions<-get_MT_positions(controls, count)
   Spike_positions<-get_Spike_positions(controls, count)
   
-  # Filter expression matrix
+  # Treating expression matrix
   count<-Filter_exp_matrix(count, MT_positions, Spike_positions, option=mode)
   rm(Spike_positions)
   rm(MT_positions)
-    
-  # Correct for length if possible and write matrix
-  if(! is.null(controls$GeneID)) ccount<-correct_gene_length(controls, count)
+   
+  # Correct for length if possible and save expression matrix
+  if(length_correction && ! is.null(controls$GeneID)) ccount<-correct_gene_length(controls, count)
   else ccount<-count
-  write.table(ccount, paste0(mode, output1), row.names=TRUE, col.names=TRUE, sep='\t')
-
+  write.table(ccount,  output1, row.names=TRUE, col.names=TRUE, sep='\t')
+  
   # Plotting raw data
   plot.data(ccount, 
             color=as.factor(pheno[,grep(color.by, colnames(pheno))]), 
@@ -214,14 +216,16 @@ main<-function(exp_matrix, cell_pheno, genes_table, mode='Nuclear',
   # Calculating size factors
     if(preclustering){
       clusters<-quickCluster(SCE, min.size=min_cluster_size)
-      SCE<-computeSumFactors(SCE, cluster=clusters, sizes=pooling_sizes, positive=force.positive, get.spikes=FALSE, errors=FALSE)
+      SCE<-computeSumFactors(SCE, cluster=clusters, sizes=pooling_sizes/length(levels(clusters)), positive=force.positive, get.spikes=FALSE, errors=FALSE)
     }else{
       SCE<-computeSumFactors(SCE, cluster=NULL, sizes=pooling_sizes, positive=force.positive, get.spikes=FALSE, errors=FALSE)
     }
   SF<-(sizeFactors(SCE))
   
   # Normalizing data
-  SCE<-normalise(SCE, log=FALSE)  
+  SCE<-normalise(SCE, log=FALSE)
+  count<-t(t(count)/SF)
+  
   # treating and saving Cells phenotype file
     # Add size factors
   pheno$Size_factors<-SF
@@ -246,11 +250,10 @@ main<-function(exp_matrix, cell_pheno, genes_table, mode='Nuclear',
   }
   write.table(pheno, output3, row.names=TRUE, col.names=TRUE, sep="\t")
 
-  # Correct for length if possible and save matrix
-  if(! is.null(controls$GeneID)) ccount<-correct_gene_length(controls, get_exprs(SCE, "exprs"))
-  else ccount<-get_exprs(SCE, "exprs")
-  write.table(ccount, paste0(mode, output2), row.names=TRUE, col.names=TRUE, sep='\t')
-
+  # Correct for length if possible and write table
+  if(length_correction && ! is.null(controls$GeneID)) ccount<-correct_gene_length(controls, count)
+  else ccount<-count
+  write.table(ccount, output2, row.names=TRUE, col.names=TRUE, sep='\t')
   
   # Plotting Normalized Data
   plot.data(ccount, 
@@ -262,5 +265,5 @@ main<-function(exp_matrix, cell_pheno, genes_table, mode='Nuclear',
 args<-commandArgs(TRUE)
 main(args[1], args[2], args[3], args[4], args[5],
       as.logical(args[6]), as.numeric(args[7]), as.logical(args[8]),
-      as.logical(args[9]), args[10],
-      args[11], args[12], args[13])
+      as.logical(args[9]), as.logical(args[10]), args[11],
+      args[12], args[13], args[14])
