@@ -165,10 +165,21 @@ plot.data<-function(matrix, color="black", normalized=FALSE) {
   rm(pca)
   
   # Plot Tsne on log transformed data
-  tsne<-Rtsne(t(log(matrix+1)), pca=FALSE)
-  pdf(paste0("Scran_", sub(" ", "", data), "_tsne.pdf"))
-  plot.tsne(tsne, color=color, title=paste0(data, ' T-SNE plot \n(log transformed)'))
+    # Get perplexity max value
+  n.neighbors<-floor(ncol(matrix)/3.5)
+    # Calculate perplexity intermediate values
+  n.neighbors<-c(2, min(floor(n.neighbors/5), 30), floor(n.neighbors/2), n.neighbors)
+    # Clean vector
+  n.neighbors<-unique(n.neighbors[which(n.neighbors>=2)])
+    # Calculate and plot TSNE
+  pdf(file=paste0("Scran_", sub(" ", "", data), "_tsne.pdf"), width=8*length(n.neighbors), height=8)
+  layout(matrix(c(1:length(n.neighbors)), nrow=1, byrow=TRUE))
+  for(nn in n.neighbors) {
+    tsne<-Rtsne(t(log(matrix+1)), pca=FALSE, perplexity=nn)
+    plot.tsne(tsne, color=color, title=paste0(data, ' T-SNE plot \n(log transformed, perplexity = ', nn, ')'))
+  }
   dev.off()
+  layout(matrix(c(1), nrow=1, byrow=TRUE))
 }
 
 ##### Main function =============================================================================================================================================================================
@@ -259,6 +270,12 @@ main<-function(exp_matrix, cell_pheno, genes_table, mode='Nuclear',
   plot.data(ccount, 
             color=as.factor(pheno[,grep(color.by, colnames(pheno))]), 
             normalized=TRUE)
+  
+  # Clean directory
+  if(file.exists("Rplots.pdf")) file.remove("Rplots.pdf")
+  
+  # End
+  return("Normalization process success")
 }
   
         ### Launch commands
