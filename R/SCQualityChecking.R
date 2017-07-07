@@ -217,7 +217,7 @@ plotSaturation<-function(table, name) {
                       ymax=mean+sd), colour='royalblue3', width=(sampl[2]-sampl[1])/5)+theme_bw()+
     xlab("Number of reads")+ylab("Number of detected features")+
     ggtitle(paste0(name," Saturation Curve "))
-  ggsave(paste0("Saturation_curve_", name, ".png"), plot=plot, device="png")
+  ggsave(paste0("Saturation_curve_", name, ".pdf"), plot=plot, device="pdf")
 }
 ## Fitting function
 fitMMModel<-function(table){
