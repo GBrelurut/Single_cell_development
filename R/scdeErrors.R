@@ -43,6 +43,7 @@ if(args[4] != "NULL") {
 }
 
 ## Fit error models
+count<-apply(count,2,function(x) {storage.mode(x) <- 'integer'; x})
 em<-scde.error.models(count, n.cores=as.numeric(args[3]), groups = group, 
                       save.model.plots = as.logical(args[5]),
                       min.nonfailed = as.numeric(args[6]), min.size.entries = as.numeric(args[7]),
