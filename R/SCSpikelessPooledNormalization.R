@@ -152,15 +152,15 @@ plot.data<-function(matrix, color="black", normalized=FALSE) {
   else data<-"Raw Data"
   
   # Plot unscaled PCA
-  pca<-PCA(t(matrix), graph=FALSE, scale.unit=FALSE)
+  pca<-PCA(t(log(matrix+1)), graph=FALSE, scale.unit=FALSE)
   pdf(paste0("Scran_", sub(" ", "", data), "_unscaledPCA.pdf"))
-  plot.pca(pca, color=color, title=paste0(data, ' PCA (unscaled)'))
+  plot.pca(pca, color=color, title=paste0(data, ' PCA (unscaled, log transformed)'))
   dev.off()
   
   # Plot scaled PCA
   pca<-PCA(t(matrix), graph=FALSE, scale.unit=TRUE)
   pdf(paste0("Scran_", sub(" ", "", data), "_scaledPCA.pdf"))
-  plot.pca(pca, color=color, title=paste0(data, ' PCA (scaled)'))
+  plot.pca(pca, color=color, title=paste0(data, ' PCA (scaled, log transformed)'))
   dev.off()
   rm(pca)
   
