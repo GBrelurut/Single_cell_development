@@ -243,10 +243,10 @@ main<-function(exp_matrix, cell_pheno, genes_table, mode='Nuclear',
   rm(SF)
     # Annotating for cell cycle
   if(cell_cycle){
-    if(organism=='mus musculus'){
+    if(organism=='mus_musculus'){
       pairs<-readRDS(system.file("exdata", "mouse_cycle_markers.rds", package="scran"))
     }else{
-      if(organism =='homo sapiens'){
+      if(organism =='homo_sapiens'){
         pairs<-readRDS(system.file("exdata", "human_cycle_markers.rds", package="scran"))
       }else{
         stop ("Organism for cell cycle annotation isn't valid.")
