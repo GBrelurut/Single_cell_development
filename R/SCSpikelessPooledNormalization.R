@@ -188,7 +188,7 @@ main<-function(exp_matrix, cell_pheno, genes_table, mode='Nuclear',
                min_cluster_size=100, force.positive=FALSE,
                length_correction=TRUE,
                cell_cycle=FALSE, organism='mus musculus',
-               output1, output2, output3){
+               output){
   
   ### This function integrates all the parameters given by the user and write the normalized 
   ### expression matrix and the associated size factor in the cells phenotype file.
@@ -208,9 +208,13 @@ main<-function(exp_matrix, cell_pheno, genes_table, mode='Nuclear',
   rm(MT_positions)
    
   # Correct for length if possible and save expression matrix
-  if(length_correction && ! is.null(controls$GeneID)) ccount<-correct_gene_length(controls, count)
-  else ccount<-count
-  write.table(ccount,  output1, row.names=TRUE, col.names=TRUE, sep='\t')
+  if(length_correction && ! is.null(controls$GeneID)){
+    ccount<-correct_gene_length(controls, count)
+    write.table(ccount,  "lengthCorrectedCount.tsv", row.names=TRUE, col.names=TRUE, sep='\t')
+  }
+  else {
+    ccount<-count
+  } 
   
   # Plotting raw data
   plot.data(ccount, 
@@ -259,12 +263,18 @@ main<-function(exp_matrix, cell_pheno, genes_table, mode='Nuclear',
     SCE$phase[assigned$scores$G1>0.5 & assigned$scores$G2M>0.5]<-"unknown"
     pheno$Cell_cycle<-SCE$phase
   }
-  write.table(pheno, output3, row.names=TRUE, col.names=TRUE, sep="\t")
+  write.table(pheno, output, row.names=TRUE, col.names=TRUE, sep="\t")
 
   # Correct for length if possible and write table
-  if(length_correction && ! is.null(controls$GeneID)) ccount<-correct_gene_length(controls, count)
-  else ccount<-count
-  write.table(ccount, output2, row.names=TRUE, col.names=TRUE, sep='\t')
+    if(length_correction && ! is.null(controls$GeneID)){
+    ccount<-correct_gene_length(controls, count)
+    write.table(ccount,  "lengthCorrectedNormalizedCount.tsv", row.names=TRUE, col.names=TRUE, sep='\t')
+  }
+  else {
+    ccount<-count
+    write.table(ccount,  "normalizedCount.tsv", row.names=TRUE, col.names=TRUE, sep='\t')
+  } 
+  
   
   # Plotting Normalized Data
   plot.data(ccount, 
@@ -283,4 +293,4 @@ args<-commandArgs(TRUE)
 main(args[1], args[2], args[3], args[4], args[5],
       as.logical(args[6]), as.numeric(args[7]), as.logical(args[8]),
       as.logical(args[9]), as.logical(args[10]), args[11],
-      args[12], args[13], args[14])
+      args[12])
