@@ -36,11 +36,11 @@ cellDataSet<-function(count, fam, detection.threshold) {
   ## Set option verctor
   dist.family<-c("negbinomial.size", "negbinomial", "tobit", "gaussianff") # Last families are untested, but conserved to help module update
   # Check parameter
-  if(! args[3] %in% dist.family) stop(warning("Undifined distribution family"))
+  if(! fam %in% dist.family) stop(warning("Undifined distribution family"))
   # Create CDS
-  if(args[3]==dist.family[1]) CDS<-newCellDataSet(as.matrix(count), expressionFamily=negbinomial.size(), lowerDetectionLimit=detection.threshold)
-  if(args[3]==dist.family[2]) CDS<-newCellDataSet(as.matrix(count), expressionFamily=negbinomial(), lowerDetectionLimit=detection.threshold)
-  if(args[3]==dist.family[3] || args[3]==dist.family[4]) stop(warning("Undifined distribution family"))
+  if(fam==dist.family[1]) CDS<-newCellDataSet(as.matrix(count), expressionFamily=negbinomial.size(), lowerDetectionLimit=detection.threshold)
+  if(fam==dist.family[2]) CDS<-newCellDataSet(as.matrix(count), expressionFamily=negbinomial(), lowerDetectionLimit=detection.threshold)
+  if(fam==dist.family[3] || fam==dist.family[4]) stop(warning("Undifined distribution family"))
   return(CDS)
 }
 
