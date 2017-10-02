@@ -81,7 +81,7 @@ count<-import_exp_matrix(args[1])
 pheno<-import_pheno(args[2])
 
 ## Make CDS
-CDS<-cellDataSet(count, args[3], args[4])
+CDS<-cellDataSet(count, args[3], as.numeric(args[4]))
 
 ## Normalize
 CDS<-normalize(CDS, args[5], pheno)
@@ -90,12 +90,12 @@ CDS<-normalize(CDS, args[5], pheno)
 CDS<-estimateDispersions(CDS)
 
 # Select ordering genes
-if(args[6]) {
-  CDS<-selectOrderingGenes(CDS, args[7], args[8])
+if(as.logical(args[6])) {
+  CDS<-selectOrderingGenes(CDS, as.numeric(args[7]), as.numeric(args[8]))
 }
 
 # Dimensionality reduction
-CDS<-reduceDimension(CDS, max_components=args[9], reduction_method=args[10], norm_method=args[11])
+CDS<-reduceDimension(CDS, max_components=as.numeric(args[9]), reduction_method=args[10], norm_method=args[11])
 
 # Order cells in pseudotime
 CDS<-orderCells(CDS, reverse=as.logical(args[12]))
