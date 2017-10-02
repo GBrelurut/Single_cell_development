@@ -81,29 +81,29 @@ count<-import_exp_matrix(args[1])
 pheno<-import_pheno(args[2])
 
 ## Make CDS
-CDS<-cellDataSet(count, arg[3], arg[4])
+CDS<-cellDataSet(count, args[3], args[4])
 
 ## Normalize
-CDS<-normalize(CDS, arg[5], pheno)
+CDS<-normalize(CDS, args[5], pheno)
 
 # Estimate dispersion
 CDS<-estimateDispersions(CDS)
 
 # Select ordering genes
-if(arg[6]) {
-  CDS<-selectOrderingGenes(CDS, arg[7], arg[8])
+if(args[6]) {
+  CDS<-selectOrderingGenes(CDS, args[7], args[8])
 }
 
 # Dimensionality reduction
-CDS<-reduceDimension(CDS, max_components=arg[9], reduction_method=arg[10], norm_method=arg[11])
+CDS<-reduceDimension(CDS, max_components=args[9], reduction_method=args[10], norm_method=args[11])
 
 # Order cells in pseudotime
-CDS<-orderCells(CDS, reverse=as.logical(arg[12]))
+CDS<-orderCells(CDS, reverse=as.logical(args[12]))
 
 # Plot celltrajectory
 pdf("monocleCellsTrajectory.pdf")
-plot_cell_trajectory(CDS, color_by=arg[13])
+plot_cell_trajectory(CDS, color_by=args[13])
 dev.off()
 
 # Write pheno table
-write.table(pData(CDS), file=arg[2], col.names=TRUE, row.names=TRUE, sep="\t")
+write.table(pData(CDS), file=args[2], col.names=TRUE, row.names=TRUE, sep="\t")
