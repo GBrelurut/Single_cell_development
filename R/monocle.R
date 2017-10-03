@@ -53,6 +53,7 @@ normalize<-function(CDS, bypass, pheno) {
   }
   
   pheno$Size_Factor<-pheno$Size_Factors
+  pheno$sizeFactors<-pheno$Size_Factors
   pData(CDS)<-pheno
   return(CDS)
 }
