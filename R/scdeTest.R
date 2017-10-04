@@ -98,7 +98,9 @@ getLinesIndices<-function(formula, compa, ID, pheno){
   col<-getColumns(formula, pheno, ID)
   
   # Prepare matrix for matching search
-  ref<-apply(pheno[,col], 2, as.character)
+  ref<-c()
+  if(length(col)>1 ref<-apply(pheno[,col], 2, as.character)
+  else ref<-as.character(pheno[,col])
   ref<-rbind(colnames(pheno)[col], ref)
   
   # Caculate matching terms
