@@ -4,6 +4,7 @@
 args<-commandArgs(TRUE)
 
 ## Load library
+library("methods")
 library('scde')
 
 ## Import Expression Matrix
