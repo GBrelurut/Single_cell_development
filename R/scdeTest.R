@@ -113,7 +113,7 @@ getLinesIndices<-function(formula, compa, ID, pheno){
   
   #Get indices
   
-  if(length(col)>1{
+  if(length(col)>1) {
     # For each set
     table<-data.frame(apply(mtable, 2, function(x) {
       # For each line of reference matrix
