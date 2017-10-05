@@ -128,7 +128,7 @@ getLinesIndices<-function(formula, compa, ID, pheno){
     #Return indices in a list
     return(list(set1=which(table$set1), set2=which(table$set2)))
   } else {
-    table<-data.frame(sapply(mtable, function(x){grepl(x, ref)})))
+    table<-data.frame(sapply(mtable, function(x){grepl(x, ref)}))
     return(list(set1=which(table$set1), set2=which(table$set2)))
   }
 }
