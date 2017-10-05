@@ -103,9 +103,11 @@ getLinesIndices<-function(formula, compa, ID, pheno){
   else ref<-as.character(pheno[,col])
   ref<-rbind(colnames(pheno)[col], ref)
   
-  warning(col)
-  warning(pheno[,col])
-  warning(ref)
+  cat("Grouping columns:" )
+  cat(col)
+  cat(pheno[,col])
+  cat("Matching Patterns:")
+  cat(ref)
           
   # Caculate matching terms
   ref<-apply(ref, 2, function(x) {
@@ -115,8 +117,9 @@ getLinesIndices<-function(formula, compa, ID, pheno){
   #Extract comparison members
   mtable<-getMembers(compa)
   
-  warning(mtable$set1)
-  warning(mtable$set2)
+  cat("Comparison members")
+  cat(paste0("Member 1: ", mtable$set1))
+  cat(paste0("Member 2: ", mtable$set2))
   
   #Get indices
   
@@ -158,13 +161,18 @@ compa<-args[7]
 
 ## Generate comparison factor vector
 iList<-getLinesIndices(formula, compa, ID, pheno)
-warning(iList$set1)
-warning(iList$set2)
+
+cat("Found indices for set 1:")
+cat(iList$set1)
+cat("Found indices for set 2:")
+cat(iList$set2)
 
 groups<-rep(NA, length(nrow(model)))
-groups[iList$set1]<-factor("set1")
-groups[iList$set2]<-factor("set2")
-warning(groups)
+groups[iList$set1]<-"set1"
+groups[iList$set2]<-"set2"
+groups<-factor(groups)
+
+cat("Grouping factor")
 
 ## Get batch vector
 if(args[10] != "NULL") { batchCol<-as.factor(pheno[, grep(args[10], colnames(pheno))])
