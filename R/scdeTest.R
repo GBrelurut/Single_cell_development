@@ -113,19 +113,24 @@ getLinesIndices<-function(formula, compa, ID, pheno){
   
   #Get indices
   
+  if(length(col)>1{
     # For each set
-  table<-data.frame(apply(mtable, 2, function(x) {
-    # For each line of reference matrix
-    logic<-apply(ref, 1, function(y) {
-      # For each value in the set : check if the value is present
-      sapply(x, function(z){grepl(z, y)})
-    })
-    # If all value are found in the line, return TRUE, else FALSE
-    return(colSums(logic)==length(x))
-  }))
+    table<-data.frame(apply(mtable, 2, function(x) {
+      # For each line of reference matrix
+      logic<-apply(ref, 1, function(y) {
+        # For each value in the set : check if the value is present
+        sapply(x, function(z){grepl(z, y)})
+      })
+      # If all value are found in the line, return TRUE, else FALSE
+      return(colSums(logic)==length(x))
+    }))
   
-  #Return indices in a list
- return(list(set1=which(table$set1), set2=which(table$set2)))
+    #Return indices in a list
+    return(list(set1=which(table$set1), set2=which(table$set2)))
+  } else {
+    table<-data.frame(sapply(mtable, function(x){grepl(x, ref)})))
+    return(list(set1=which(table$set1), set2=which(table$set2)))
+  }
 }
 
 #### Main Script========================================================================
