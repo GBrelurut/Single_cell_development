@@ -173,6 +173,7 @@ groups[iList$set2]<-"set2"
 groups<-factor(groups)
 
 cat("Grouping factor")
+cat(groups)
 
 ## Get batch vector
 if(args[10] != "NULL") { batchCol<-as.factor(pheno[, grep(args[10], colnames(pheno))])
