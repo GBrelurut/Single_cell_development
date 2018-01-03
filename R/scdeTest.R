@@ -49,7 +49,7 @@ import_prior<-function(file){
 getColumns<-function(formula, pheno, expID){
   expName<-paste0("Exp.", expID,".")
   # Isolate members in a vector
-  names<-unlist(strsplit(substr(formula, 2, nchar(formula)), "+", fixed =TRUE))
+  names<-unlist(strsplit(formula, "+", fixed =TRUE))
   # Exclude interaction terms
   names<-names[setdiff(seq(names), grep(":", names))]
   
