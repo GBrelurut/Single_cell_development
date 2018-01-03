@@ -186,6 +186,7 @@ plot.data<-function(matrix, color="black", normalized=FALSE) {
 main<-function(exp_matrix, cell_pheno, genes_table, mode='Nuclear', 
                color.by="Condition", preclustering=FALSE, 
                min_cluster_size=100, force.positive=FALSE,
+               detection = 1, nCells = 1,
                length_correction=TRUE,
                cell_cycle=FALSE, organism='mus musculus',
                output){
@@ -206,6 +207,14 @@ main<-function(exp_matrix, cell_pheno, genes_table, mode='Nuclear',
   count<-Filter_exp_matrix(count, MT_positions, Spike_positions, option=mode)
   rm(Spike_positions)
   rm(MT_positions)
+  
+    # Filter genes on expression
+  kept<-which(rowSums(count >= detection) >= nCells)
+  if (length(kept) == 0) {
+    warning("No genes passed expression criterion, continuing with whole dataset")
+  } else {
+    count <- count[kept,]
+  } 
    
   # Correct for length if possible and save expression matrix
   if(length_correction && ! is.null(controls$GeneID)){
@@ -292,5 +301,6 @@ main<-function(exp_matrix, cell_pheno, genes_table, mode='Nuclear',
 args<-commandArgs(TRUE)
 main(args[1], args[2], args[3], args[4], args[5],
       as.logical(args[6]), as.numeric(args[7]), as.logical(args[8]),
+      as.numeric(args[13]), as.numeric(args[14]),
       as.logical(args[9]), as.logical(args[10]), args[11],
       args[12])
