@@ -23,7 +23,7 @@ import_pheno<-function(file){
   ### Name of the file or complete path should be given as input.
   
   pheno<-read.table(file, header=TRUE, 
-                    stringsAsFactors=FALSE, sep='') 
+                    stringsAsFactors=FALSE, sep='\t') 
   rownames(pheno)<-pheno[,2]
   pheno<-pheno[ order(rownames(pheno)),]
   return(pheno)
