@@ -25,7 +25,16 @@ import_pheno<-function(file){
   
   pheno<-read.table(file, header=TRUE, 
                     stringsAsFactors=FALSE, sep='\t') 
-  rownames(pheno)<-pheno[,2]
+  # Design v2 case
+  i <- grep("SampleId", colnames(pheno))
+  # Design v1 case
+  if(length(i) == 0) i <-grep("Name", colnames(pheno), fixed=TRUE)
+  # Extract sample names
+  nms <- pheno[,i]
+  # Check whole numeric case
+  if( ! any(is.na(as.numeric(nms)))) nms<-paste0("X", nms)
+  # Set names
+  rownames(pheno)<-nms
   pheno<-pheno[ order(rownames(pheno)),]
   return(pheno)
 }
