@@ -41,7 +41,6 @@ import_pheno<-function(file){
 }
 
 
-
 ## Import control genes table
 import_controls<-function(file){
   controls<-read.table(file, header=TRUE,
@@ -407,7 +406,7 @@ getOutliers<-function(values, normThreshold=0.001){
 
 
 ## Saturation global function
-saturation <- function (count, satThreshold=0.7, normThreshold=0.01, iterations = 10, 
+saturation <- function (count, satThreshold=0.7, fitThreshold=0.97, iterations = 10, 
                         threshold=10, round=10000, nPoints=20, nCores=2) {
   ###This function takes as input an expression matrixand gives as output a
   ###saturation plot and a fitting plot for heach column of the matrix (Requires ggplot2)
@@ -445,13 +444,7 @@ saturation <- function (count, satThreshold=0.7, normThreshold=0.01, iterations 
   
   # Get cells to suppress indices
   i<-which(apply(metrics[1:2,], 2, function(x){any(x <0, na.rm=TRUE)}) | metrics[3,] < satThreshold | apply(metrics, 2, anyNA))
-  if(! is.null(i)) r<-metrics[4, -i]
-  else r<-metrics[4,]
-  outliers<-getOutliers(r, normThreshold)
-  # if needed change by oultiers<-which(metrics[4, -i] < fitThreshold) changing normThreshold in fitThreshold in parameters
-  
-  # Correct indices
-  if(length(i) > 0 & length(outliers) > 0 ) outliers<-sapply(outliers, correctIndex, ref=i)
+  oultiers<-which(metrics[4,] < fitThreshold) 
   i<-c(i, outliers)
   
   # Plot data before and after removal
@@ -489,7 +482,7 @@ saturation <- function (count, satThreshold=0.7, normThreshold=0.01, iterations 
 
 #### Main function===============================================================================
 main<-function(file1, file2, file3, detection=10,  exp_option='Nuclear',
-               satThreshold=0.7, normThreshold=0.01, round=10000, nCores=2,
+               satThreshold=0.7, fitThreshold=0.01, round=10000, nCores=2,
                propmt_threshold=0.2, propsp_threshold=0.5, nb_filters=1,
                output1, output2, output3){
   ### This function integrates all parameters given by user and realises the quality 
@@ -517,7 +510,7 @@ main<-function(file1, file2, file3, detection=10,  exp_option='Nuclear',
   
   # Finding unsaturated cells -------------------------------
   unsat<-saturation(fmatrix, threshold = detection, satThreshold = satThreshold, 
-                      normThreshold = normThreshold, round = round, nCores= nCores)
+                      fitThreshold = fitThreshold, round = round, nCores= nCores)
   
   # Extracting basic metrics --------------------------------
   exp_features<-get_detected_genes(fmatrix, detection)
@@ -583,7 +576,7 @@ args<-commandArgs(TRUE)
 
 main(args[1], args[2], args[3], 
      detection=as.numeric(args[4]), exp_option = args[5],
-     satThreshold = as.numeric(args[6]), normThreshold = as.numeric(args[7]),
+     satThreshold = as.numeric(args[6]), fitThreshold = as.numeric(args[7]),
      round = as.numeric(args[8]), nCores = as.numeric(args[9]),
      propmt_threshold = as.numeric(args[10]), 
      propsp_threshold = as.numeric(args[11]), 
