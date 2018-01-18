@@ -444,7 +444,7 @@ saturation <- function (count, satThreshold=0.7, fitThreshold=0.97, iterations =
   
   # Get cells to suppress indices
   i<-which(apply(metrics[1:2,], 2, function(x){any(x <0, na.rm=TRUE)}) | metrics[3,] < satThreshold | apply(metrics, 2, anyNA))
-  oultiers<-which(metrics[4,] < fitThreshold) 
+  outliers<-which(metrics[4,] < fitThreshold) 
   i<-c(i, outliers)
   
   # Plot data before and after removal
