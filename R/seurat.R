@@ -48,6 +48,7 @@ import_controls<-function(file){
 normalize.seurat<-function(seurat.object, file) {
   pheno<-import_pheno(file)
   seurat.object@data<-log(t(t(seurat.object@raw.data)/pheno$Size_factors) + 1)
+  return(seurat.object)
 }
 
 #### HVG detection =====================================================
