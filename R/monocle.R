@@ -62,7 +62,7 @@ normalize<-function(CDS, bypass, pheno) {
 selectOrderingGenes<-function(CDS, threshold.mean, threshold.fold.dispersion) {
   # Select Genes
   dispTable<-dispersionTable(CDS)
-  orderingGenes<-subset(disp_table, mean_expression >= threshold.mean & dispersion_empirical >= threshold.fold.dispersion*dispersion_fit)$gene_id
+  orderingGenes<-subset(dispTable, mean_expression >= threshold.mean & dispersion_empirical >= threshold.fold.dispersion*dispersion_fit)$gene_id
   # Set CDS
   CDS<-setOrderingFilter(CDS, orderingGenes)
   # Plot genes
