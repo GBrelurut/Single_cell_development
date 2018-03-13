@@ -102,7 +102,7 @@ CDS<-orderCells(CDS, reverse=as.logical(args[12]))
 
 # Plot celltrajectory
 pdf("monocleCellsTrajectory.pdf")
-color <- pheno[, grep(args[13], colnames(pheno))
+color <- pheno[, grep(args[13], colnames(pheno))]
 plot_cell_trajectory(CDS, color_by= color)
 dev.off()
 
