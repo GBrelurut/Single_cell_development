@@ -219,7 +219,7 @@ main<-function(matrix.file, cell.file, genes.file, # input files
   object@data.info <- data.frame(cells.names = object@cell.names)
   object <- FindClusters(object, pc.use = pcs, resolution = resolution,
                          print.output = FALSE, save.SNN = TRUE,  k.param = k.param, 
-                         k.scale = k.scale, algorithm = algorithm, do.sparse = sparse)
+                         k.scale = k.scale, algorithm = algorithm, do.sparse = sparse, temp.file.location=getwd())
   
   ## Visualize using TSNE
   object <- RunTSNE(object, dims.use = pcs, do.fast=FALSE)
