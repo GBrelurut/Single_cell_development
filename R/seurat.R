@@ -105,7 +105,7 @@ silhouette.seurat<-function(seurat.object, pc.used, distance="euclidean", plot=T
   d <- dist(coord, method=distance)
   sil<-silhouette(as.numeric(clusters), dist=d)
   if(plot){
-    plot(sil, col=as.factor(clusters[order(clusters, decreasing=FALSE)]), main="Silhouette plot of Seurat clustering", lty=2)
+    plot(sil, col=as.factor(clusters[order(clusters, decreasing=FALSE)]), main="Silhouette plot of Seurat clustering")
     abline(v=mean(sil[,3]), col="red4", lty=2)
   }
   return(sil)
