@@ -151,9 +151,9 @@ main<-function(file1,
   if(! is.null(group)) nbr_cells<-factor_mad_filter(groups, nb_reads,nMad =nMad, direction=direction)
   else nbr_cells<-mad_filter(nb_reads, nMad =nMad, direction=direction)
 
-  SummarizedExperiment::$Nb_features<-exp_features
+  SummarizedExperiment::colData(sce)$Nb_features<-exp_features
   rm(exp_features)
-  SummarizedExperiment::$Nb_reads<-nb_reads
+  SummarizedExperiment::colData(sce)$Nb_reads<-nb_reads
   rm(nb_reads)
   
   # Code from previous version allowing different options for feature and reads counting------  
