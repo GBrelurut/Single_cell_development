@@ -9,7 +9,6 @@ library('SingleCellExperiment')
 #### Reading and ordering non auxillary tables------------------------------------------
 
 ## Import Data
-## Import SCE
 import_SCE <- function(file) {
   return(readRDS(file))
 }
@@ -401,18 +400,18 @@ main<-function(file,
   # Treating data for advanced metrics ----------------------
   if(propmt_threshold){
     prop <- get_prop(sce, "mitochondrial")
-    rowData(sce)$Prop_Mt <- prop
+    SummarizedExperiment::colData(sce)$Prop_Mt <- prop
     mt_cells <- which(prop > propmt_threshold)
   }
   
   if(propsp_threshold){
     prop <- get_prop(sce, "spike")
-    rowData(sce)$Prop_Sp <- prop
+    SummarizedExperiment::colData(sce)$Prop_Sp <- prop
     sp_cells <- which(prop > propsp_threshold)
   }
   
   # Filtering SCE ----------------------------------------
-  fmatrix <- SingleCellExperimen::assay(filter_SCE(sce, mode = exp_option), "counts")
+  fmatrix <- SingleCellExperiment::assay(filter_SCE(sce, mode = exp_option), "counts")
   
   # Extracting basic metrics --------------------------------
   exp_features<- colSums(fmatrix > detection)
