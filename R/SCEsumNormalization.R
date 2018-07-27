@@ -1,3 +1,4 @@
+#! /usr/bin/env Rscript
 
 #### Load Libraries
 library('FactoMineR')
@@ -138,7 +139,7 @@ main<-function(file, mode='Nuclear',
   
   # filtering genes
   fsce <- filter_SCE(sce, mode = mode )
-  
+  sce <- filter_SCE(sce, mode = "Endogenous")
   
   # Plotting raw data
   plot.data(SummarizedExperiment::assay(sce, "counts"), 
