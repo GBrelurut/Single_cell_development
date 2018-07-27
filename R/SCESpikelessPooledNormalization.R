@@ -1,3 +1,4 @@
+#! /usr/bin/env Rscript
 
 #### Load Libraries
 library('scran')
@@ -138,6 +139,7 @@ main<-function(file, mode='Nuclear',
   
   # Treating expression matrix
   fsce <- filter_SCE(sce, mode)
+  sce <- filter_SCE(sce, "Endogenous")
   
     # Filter genes on expression
   kept<- rowSums(count >= detection) >= nCells
