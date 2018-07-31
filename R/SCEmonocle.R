@@ -100,8 +100,5 @@ color <- pheno[, grep(args[12], colnames(pheno))]
 plot_cell_trajectory(CDS, color_by= color)
 dev.off()
 
-# Write pheno table
-write.table(pData(CDS), file = "monocle_cellMetadata.tsv", col.names=TRUE, row.names=TRUE, sep="\t")
-
 # Save CDS
 saveRDS(CDS, "monocle.RDS")
