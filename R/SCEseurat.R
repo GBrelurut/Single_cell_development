@@ -93,7 +93,7 @@ main<-function(file,  # input file
                n.cells = 0, detection = 10, # filtering genes on detection
                hvg.detection = "none", low.mean, high.mean, var.threshold, spike = FALSE, # filtering on variability
                n.cores = 2, jackstraw.replicate = 1000, jackstraw.prop = 0.1, sig.threshold = 0.05, score.threshold = 1e-5, # selecting significative dimensions
-               resolution = 0.6, k.param = 30, k.scale = 25, algorithm="Louvain", sparse = FALSE # clustering options
+               resolution = 0.6, k.param = 30, algorithm="Louvain", sparse = FALSE # clustering options
                ) {
   
   library(methods)
@@ -217,7 +217,7 @@ args <- commandArgs(TRUE)
 arg2 <- as.valid.logical(args[2])
 arg3 <- as.valid.logical(args[3])
 arg10 <- as.valid.logical(args[10])
-arg20 <- as.valid.logical(args[20])
+arg19 <- as.valid.logical(args[19])
 
 ## Launch main function
 main(args[1], # input file
@@ -225,5 +225,5 @@ main(args[1], # input file
      as.numeric(args[4]), as.numeric(args[5]), # filtering genes on detection
      args[6], as.numeric(args[7]), as.numeric(args[8]), as.numeric(args[9]), arg10, #filtering on variability
      as.numeric(args[11]), as.numeric(args[12]), as.numeric(args[13]), as.numeric(args[14]), as.numeric(args[15]), # jackstraw options
-     as.numeric(args[16]), as.numeric(args[17]), as.numeric(args[18]), args[19], arg20 # clustering options
+     as.numeric(args[16]), as.numeric(args[17]), args[18], arg19 # clustering options
      )
