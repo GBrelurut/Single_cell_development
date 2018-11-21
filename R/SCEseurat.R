@@ -112,7 +112,7 @@ main<-function(file,  # input file
   rm(SF)
   
   ## Normalize data
-  if(normalize) object <- normalize.seurat(object)
+  if(normalize) object <- normalizeSeurat(object)
   else object@data <- log( object@raw.data + 1 )
  
   ## Filter genes on expression
